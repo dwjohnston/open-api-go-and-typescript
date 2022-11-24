@@ -12,8 +12,9 @@ package openapi
 
 import (
 	"context"
-	"net/http"
 	"errors"
+	"net/http"
+	"sync"
 )
 
 // DefaultApiService is a service that implements the logic for the DefaultApiServicer
@@ -27,21 +28,28 @@ func NewDefaultApiService() DefaultApiServicer {
 	return &DefaultApiService{}
 }
 
-// AddPet - 
+// I'm copying this from here: https://github.com/go-swagger/go-swagger/blob/master/examples/tutorials/todo-list/server-complete/restapi/configure_todo_list.go
+var pets = make(map[int64]*Pet)
+
+var lastId int64
+var petsLock = &sync.Mutex{}
+
+// AddPet -
 func (s *DefaultApiService) AddPet(ctx context.Context, pet NewPet) (ImplResponse, error) {
-	// TODO - update AddPet with the required logic for this service method.
-	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, Pet{}) or use other options such as http.Ok ...
-	//return Response(200, Pet{}), nil
+	petsLock.Lock()
+	defer petsLock.Unlock()
 
-	//TODO: Uncomment the next line to return response Response(0, Error{}) or use other options such as http.Ok ...
-	//return Response(0, Error{}), nil
+	pets[pet.Id] = &Pet{
+		Id:   pet.Id,
+		Name: pet.Name,
+		Tag:  pet.Tag,
+	}
 
-	return Response(http.StatusNotImplemented, nil), errors.New("AddPet method not implemented")
+	return Response(201, pets[pet.Id]), nil
 }
 
-// DeletePet - 
+// DeletePet -
 func (s *DefaultApiService) DeletePet(ctx context.Context, id int64) (ImplResponse, error) {
 	// TODO - update DeletePet with the required logic for this service method.
 	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
@@ -55,30 +63,23 @@ func (s *DefaultApiService) DeletePet(ctx context.Context, id int64) (ImplRespon
 	return Response(http.StatusNotImplemented, nil), errors.New("DeletePet method not implemented")
 }
 
-// FindPetById - 
+// FindPetById -
 func (s *DefaultApiService) FindPetById(ctx context.Context, id int64) (ImplResponse, error) {
-	// TODO - update FindPetById with the required logic for this service method.
-	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
 	//TODO: Uncomment the next line to return response Response(200, Pet{}) or use other options such as http.Ok ...
-	//return Response(200, Pet{}), nil
+	return Response(200, pets[id]), nil
 
-	//TODO: Uncomment the next line to return response Response(0, Error{}) or use other options such as http.Ok ...
-	//return Response(0, Error{}), nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("FindPetById method not implemented")
 }
 
-// FindPets - 
+// FindPets -
 func (s *DefaultApiService) FindPets(ctx context.Context, tags []string, limit int32) (ImplResponse, error) {
 	// TODO - update FindPets with the required logic for this service method.
 	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
 	//TODO: Uncomment the next line to return response Response(200, []Pet{}) or use other options such as http.Ok ...
-	//return Response(200, []Pet{}), nil
+	return Response(200, pets), nil
 
 	//TODO: Uncomment the next line to return response Response(0, Error{}) or use other options such as http.Ok ...
 	//return Response(0, Error{}), nil
 
-	return Response(http.StatusNotImplemented, nil), errors.New("FindPets method not implemented")
 }

@@ -1,3 +1,13 @@
+
+## ‼️ IMPORTANT NOTE RE: VSCODE ‼️
+
+You can't 'add folder' this whole project into VSCode, because VSCode will get confused trying to resolve the go modules. 
+
+You need to add folder the individual backends. 
+
+
+
+
 ## Notes
 
 
