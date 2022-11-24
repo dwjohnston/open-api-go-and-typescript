@@ -75,9 +75,12 @@ func (s *DefaultApiService) FindPetById(ctx context.Context, id int64) (ImplResp
 func (s *DefaultApiService) FindPets(ctx context.Context, tags []string, limit int32) (ImplResponse, error) {
 	// TODO - update FindPets with the required logic for this service method.
 	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
+	values := []*Pet{}
+	for _, value := range pets {
+		values = append(values, value)
+	}
 	//TODO: Uncomment the next line to return response Response(200, []Pet{}) or use other options such as http.Ok ...
-	return Response(200, pets), nil
+	return Response(200, values), nil
 
 	//TODO: Uncomment the next line to return response Response(0, Error{}) or use other options such as http.Ok ...
 	//return Response(0, Error{}), nil
