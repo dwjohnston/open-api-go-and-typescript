@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8080",
-
   "dependencies": {
+    "@tanstack/react-query": "^4.22.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -22,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject", 
+    "generate:msw": "msw-auto-mock ../spec/petstore-separate/spec/swagger.json -o src/generated/msw.js --base-url '/api'"
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +44,9 @@
     ]
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.5.2"
+    "@faker-js/faker": "^7.6.0",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
+    "msw": "^0.49.2",
+    "msw-auto-mock": "^0.9.0"
   }
 }

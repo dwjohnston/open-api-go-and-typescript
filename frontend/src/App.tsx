@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { NewPet, Pet } from './generated/models';
 import { petsApi } from './services/petsService';
+import { DisplayPetById } from './components/DisplayPetById';
 
 
 
@@ -71,6 +72,9 @@ function App() {
 
   return (
     <div className="App">
+
+      <DisplayPetById petId ={1}/>
+
       {status === "loading" && <span>Loading...</span>}
       {status === "error" && <span style={{ color: "red" }}>Error!</span>}
 

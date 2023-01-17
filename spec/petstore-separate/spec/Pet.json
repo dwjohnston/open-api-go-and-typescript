@@ -10,7 +10,9 @@
       "format": "int64"
     },
     "name": {
-      "type": "string"
+      "type": "string", 
+      "example" : "Fido"
+      
     },
     "tag": {
       "type": "string"
