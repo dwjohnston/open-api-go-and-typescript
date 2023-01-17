@@ -79,10 +79,6 @@ func (s *DefaultApiService) FindPets(ctx context.Context, tags []string, limit i
 	for _, value := range pets {
 		values = append(values, value)
 	}
-	//TODO: Uncomment the next line to return response Response(200, []Pet{}) or use other options such as http.Ok ...
 	return Response(200, values), nil
-
-	//TODO: Uncomment the next line to return response Response(0, Error{}) or use other options such as http.Ok ...
-	//return Response(0, Error{}), nil
 
 }
