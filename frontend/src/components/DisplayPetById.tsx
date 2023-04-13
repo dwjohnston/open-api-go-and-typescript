@@ -12,7 +12,11 @@ export const DisplayPetById = (props: DisplayPetByIdProps) => {
   const petQuery = usePet(props.petId); 
 
   return (
-    <div>
+    <div style={{
+      border: "solid 1px grey", 
+      margin: 12,
+      padding: 12,
+    }}>
       {petQuery.isLoading && "...loading"}
       {petQuery.isError && "Error!"}
       {petQuery.data && <>

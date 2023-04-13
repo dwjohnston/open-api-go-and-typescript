@@ -73,34 +73,26 @@ function App() {
   return (
     <div className="App">
 
-      <DisplayPetById petId ={1}/>
 
       {status === "loading" && <span>Loading...</span>}
       {status === "error" && <span style={{ color: "red" }}>Error!</span>}
 
+      {pets && pets.map((v) => {
+        return <DisplayPetById petId={v.id} key={v.id} />
 
-      <table>
-        <tbody>
-        {pets && pets.map((v) => {
-          return <tr key={v.id}>
-            <td>{v.id}</td>
-            <td>{v.name}</td>
-            <td>{v.tag}</td>
-          </tr>
-        })}
-        </tbody>
-      </table>
+      })}
+
 
 
       <form onSubmit={(e) => {
-        e.preventDefault(); 
+        e.preventDefault();
 
         //@ts-ignore
         const data = new FormData(e.target) as any;
 
         addPet({
-          id: parseInt(data.get("id")), 
-          name: data.get("name"), 
+          id: parseInt(data.get("id")),
+          name: data.get("name"),
           tag: data.get("tag"),
         })
 
