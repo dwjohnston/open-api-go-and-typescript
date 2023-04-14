@@ -1043,7 +1043,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 123,\n  \"name\": \"Fido\"\n}",
+							"raw": "{\n  \"id\": {{petId}},\n  \"name\": {{petName}}\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1169,7 +1169,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "76d4dc99-144c-4676-ae24-9fd0c3b67140",
+				"id": "1302b099-164e-4a4a-8c9b-ba4c56d8b54a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1179,7 +1179,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e49c4033-0027-485a-bfc1-3f3e88be2e78",
+				"id": "5d60dca8-8dce-4461-aceb-c66771d31627",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1189,19 +1189,31 @@
 	],
 	"variable": [
 		{
-			"id": "25f2aa50-ac56-421f-b8e0-6544d01d7725",
+			"id": "74ca3f93-8884-4938-9f29-2f29d6a5709f",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/api"
 		},
 		{
-			"id": "58d68280-5f98-4c67-a049-453dd604bade",
+			"id": "d7ab573c-f5cc-4db5-84f0-ef2bffcdc4f9",
 			"key": "testScenario1Id",
 			"value": ""
 		},
 		{
-			"id": "a1bc9f45-76de-49df-9f0d-2fb4bf69a881",
+			"id": "3f81ec86-bc47-460c-83d9-5b7af9f9a5d5",
 			"key": "testScenario2Id",
 			"value": ""
+		},
+		{
+			"id": "cb9b61be-41b8-4986-a364-c3f45ddb3077",
+			"key": "petId",
+			"value": "123",
+			"type": "string"
+		},
+		{
+			"id": "754bb087-a781-4baf-886d-61b82ee6fa34",
+			"key": "petName",
+			"value": "\"Fido\"",
+			"type": "string"
 		}
 	]
 }
