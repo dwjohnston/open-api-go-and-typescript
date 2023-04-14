@@ -40,6 +40,11 @@ func (s *DefaultApiService) AddPet(ctx context.Context, pet NewPet) (ImplRespons
 	petsLock.Lock()
 	defer petsLock.Unlock()
 
+	if pets[pet.Id] != nil {
+		return Response(409, pets[pet.Id]), nil
+
+	}
+
 	pets[pet.Id] = &Pet{
 		Id:   pet.Id,
 		Name: pet.Name,
