@@ -385,7 +385,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"<long>\",\n  \"name\": \"<string>\",\n  \"tag\": \"<string>\",\n  \"description\": \"<long>\"\n}",
+							"raw": "{\n  \"id\": 123,\n  \"name\": \"Fido\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
