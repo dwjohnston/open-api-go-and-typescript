@@ -1189,28 +1189,28 @@
 	],
 	"variable": [
 		{
-			"id": "74ca3f93-8884-4938-9f29-2f29d6a5709f",
+			"id": "11d9eda2-6ab2-477a-aa6f-50a06bc706af",
 			"key": "baseUrl",
 			"value": "http://localhost:8080/api"
 		},
 		{
-			"id": "d7ab573c-f5cc-4db5-84f0-ef2bffcdc4f9",
+			"id": "8d9e7f35-7efd-47b7-8374-7f6d3322b84c",
 			"key": "testScenario1Id",
 			"value": ""
 		},
 		{
-			"id": "3f81ec86-bc47-460c-83d9-5b7af9f9a5d5",
+			"id": "6b562947-90ef-41ec-b9c5-dd0c824cfca0",
 			"key": "testScenario2Id",
 			"value": ""
 		},
 		{
-			"id": "cb9b61be-41b8-4986-a364-c3f45ddb3077",
+			"id": "41ef7130-0f04-4523-b9aa-748c8a0ba6fa",
 			"key": "petId",
 			"value": "123",
 			"type": "string"
 		},
 		{
-			"id": "754bb087-a781-4baf-886d-61b82ee6fa34",
+			"id": "556d5651-cffd-473c-9421-b1fa303e10f5",
 			"key": "petName",
 			"value": "\"Fido\"",
 			"type": "string"
