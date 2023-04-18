@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "90c52994-592a-4f2b-accc-fbc9e4f42538",
 		"name": "Swagger Petstore",
-		"description": "A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification\n\nContact Support:\n Name: Swagger API Team\n Email: apiteam@swagger.io",
+		"description": "A sample API2 that uses a petstore as an example to demonstrate features in the swagger-2.0 specification\n\nContact Support:\n Name: Swagger API Team\n Email: apiteam@swagger.io",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_uid": "1791783-90c52994-592a-4f2b-accc-fbc9e4f42538"
 	},
