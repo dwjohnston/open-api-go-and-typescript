@@ -1,0 +1,10 @@
+.openapi-generator-ignore
+apis/DefaultApi.ts
+apis/index.ts
+index.ts
+models/ModelError.ts
+models/NewPet.ts
+models/NewPetAllOf.ts
+models/Pet.ts
+models/index.ts
+runtime.ts
