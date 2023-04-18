@@ -1,0 +1,19 @@
+{
+  "name": "api-test-runner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dwjohnston/open-api-go-and-typescript",
+  "author": "David Johnston (david@blacksheepcode.com)",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "test": "ts-node test.ts"
+  },
+  "devDependencies": {
+    "@types/newman": "^5.3.2",
+    "dotenv": "^16.0.3",
+    "newman": "^5.3.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}

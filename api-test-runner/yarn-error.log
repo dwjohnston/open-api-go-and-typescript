@@ -1,0 +1,44 @@
+Arguments: 
+  /Users/davidjohnston/.nvm/versions/node/v14.20.1/bin/node /usr/local/bin/yarn init
+
+PATH: 
+  /Users/davidjohnston/.nvm/versions/node/v14.20.1/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  14.20.1
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:137143:13)
+      at Interface.emit (events.js:400:28)
+      at Interface._ttyWrite (readline.js:1001:16)
+      at ReadStream.onkeypress (readline.js:265:10)
+      at ReadStream.emit (events.js:400:28)
+      at emitKeys (internal/readline/utils.js:358:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (readline.js:1270:36)
+      at ReadStream.emit (events.js:400:28)
+      at addChunk (internal/streams/readable.js:293:12)
+
+npm manifest: 
+  {
+    "name": "api-test-runner",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/dwjohnston/open-api-go-and-typescript",
+    "author": "David Johnston (david@blacksheepcode.com)",
+    "license": "MIT",
+    "private": false
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
