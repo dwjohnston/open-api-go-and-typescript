@@ -104,14 +104,11 @@ describe("Test Scenario 2 - Create a Pet, then create a Pet with the name ID", (
                     name: "Charles"
                 }
             });
-
-
         } catch (err) {
 
             if (validateErr(err)) {
                 expect(err.response.status).toBe(409);
                 const body = await err.response.json();
-
                 // Unfortunately these are untyped
                 expect(body.id).toBe(321);
                 expect(body.name).toBe("Fido")
