@@ -129,7 +129,7 @@ components:
   schemas:
     Pet:
       example:
-        name: name
+        name: Fido
         id: 0
         tag: tag
       properties:
@@ -137,6 +137,7 @@ components:
           format: int64
           type: integer
         name:
+          example: Fido
           type: string
         tag:
           type: string

@@ -1,0 +1,22 @@
+{
+  "name": "api-test-runner-jest",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dwjohnston/open-api-go-and-typescript",
+  "author": "David Johnston (david@blacksheepcode.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
+    "@types/jest": "^29.5.0",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
