@@ -2615,6 +2615,13 @@ jest-snapshot@^29.5.0:
     pretty-format "^29.5.0"
     semver "^7.3.5"
 
+jest-timing-reporter@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jest-timing-reporter/-/jest-timing-reporter-1.0.1.tgz#861d1dc4c1164de786373a86eb50158c78ba5ef1"
+  integrity sha512-aC8Cv+Bw5dUQCcP4XmTIYt8u2REt9FAjTX+0H2O4XHgYfACjEJjIUyguidyBGBeUOtxbCCsOE9wg2L6CXfyi4w==
+  dependencies:
+    ramda "^0.27.0"
+
 jest-util@^29.5.0:
   version "29.5.0"
   resolved "https://registry.yarnpkg.com/jest-util/-/jest-util-29.5.0.tgz#24a4d3d92fc39ce90425311b23c27a6e0ef16b8f"
@@ -3007,6 +3014,11 @@ pure-rand@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/pure-rand/-/pure-rand-6.0.1.tgz#31207dddd15d43f299fdcdb2f572df65030c19af"
   integrity sha512-t+x1zEHDjBwkDGY5v5ApnZ/utcd4XYDiJsaQQoptTXgUXX95sDg1elCdJghzicm7n2mbCBJ3uYWr6M22SO19rg==
+
+ramda@^0.27.0:
+  version "0.27.2"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.27.2.tgz#84463226f7f36dc33592f6f4ed6374c48306c3f1"
+  integrity sha512-SbiLPU40JuJniHexQSAgad32hfwd+DRUdwF2PlVuI5RZD0/vahUco7R8vD86J/tcEKKF9vZrUVwgtmGCqlCKyA==
 
 react-is@^18.0.0:
   version "18.2.0"

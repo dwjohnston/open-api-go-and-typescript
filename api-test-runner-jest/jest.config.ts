@@ -4,6 +4,12 @@
  */
 
 export default {
+
+  reporters: [
+    "default",
+    "jest-timing-reporter"
+  ],
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
