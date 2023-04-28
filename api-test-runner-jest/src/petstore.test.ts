@@ -21,10 +21,10 @@ beforeEach(() => {
         // We start our application running 
         // Note that we need to run the compiled binary! 
         // If trying to run `go run` you run into this issue: https://stackoverflow.com/questions/76051959/node-child-processes-why-does-kill-not-close-a-go-run-process-but-will
-        serverProcess = exec(`./main`, {
+        serverProcess = exec(`PET_NAME_SERVICE_URL="https://jsonplaceholder.typicode.com/users" ./main`, {
             cwd: `${process.cwd()}/../backend`
         });
-        
+
         // We wait for the 'Server started' message to come, and we resolve the promise then
         // 🤔 Why is it on stderr though?
         serverProcess.stderr?.on("data", (chunk) => {
@@ -45,7 +45,7 @@ afterEach(() => {
     return new Promise((res) => {
         serverProcess.kill();
         serverProcess.on("close", () => {
-            res(null); 
+            res(null);
         })
     });
 });
@@ -121,7 +121,50 @@ describe("Test Scenario 2 - Create a Pet, then create a Pet with the name ID", (
 
 
     });
-}); 
+});
+
+
+describe("Test Scenario 3 - forbidden pet names", () => {
+
+
+    it("Forbidden pet names will return 403", async () => {
+        const initialResult = await petsApi.findPetsRaw({});
+        expect(initialResult.raw.status).toBe(200);
+        const initialResultBody = await initialResult.value();
+        expect(initialResultBody).toHaveLength(0);
+
+
+        try {
+            const apiResult1 = await petsApi.addPetRaw({
+                pet: {
+                    id: 123,
+                    name: "Samantha"
+                }
+            });
+
+        } catch (err) {
+            if (validateErr(err)) {
+                expect(err.response.status).toBe(403);
+                const body = await err.response.json();
+                // Unfortunately these are untyped
+                expect(body.code).toBe(403);
+                expect(body.message).toBe("Disallowed pet name")
+            }
+            else {
+                throw err;
+            }
+        }
+
+        const result2 = await petsApi.findPetsRaw({});
+        expect(result2.raw.status).toBe(200);
+        const result2Body = await result2.value();
+        expect(result2Body).toHaveLength(0);
+    
+
+
+    });
+
+});
 
 
 describe("A performance test, get when there are 10 pets", () => {
@@ -133,26 +176,26 @@ describe("A performance test, get when there are 10 pets", () => {
         const initialResultBody = await initialResult.value();
         expect(initialResultBody).toHaveLength(0);
 
-        const proms = new Array(10).fill(true).map(async (v,i) => {
+        const proms = new Array(10).fill(true).map(async (v, i) => {
             const apiResult1 = await petsApi.addPetRaw({
                 pet: {
-                    id: i+1,
+                    id: i + 1,
                     name: "Fido"
                 }
             });
 
             expect(apiResult1.raw.status).toBe(201);
             const apiResultBody = await apiResult1.value();
-            expect(apiResultBody.id).toBe(i+1);
+            expect(apiResultBody.id).toBe(i + 1);
             expect(apiResultBody.name).toBe("Fido");
-        }); 
+        });
 
 
-        await Promise.all(proms); 
+        await Promise.all(proms);
 
         const newState = await petsApi.findPetsRaw({});
         expect(newState.raw.status).toBe(200);
         const newStateBody = await newState.value();
         expect(newStateBody).toHaveLength(10);
-    }); 
+    });
 }); 
