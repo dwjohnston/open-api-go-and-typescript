@@ -15,6 +15,7 @@ import (
 	"errors"
 	"net/http"
 	"sync"
+	"time"
 )
 
 // DefaultApiService is a service that implements the logic for the DefaultApiServicer
@@ -84,6 +85,8 @@ func (s *DefaultApiService) FindPets(ctx context.Context, tags []string, limit i
 	for _, value := range pets {
 		values = append(values, value)
 	}
+
+	time.Sleep(time.Duration(len(values) * 1000 * int(time.Millisecond)))
 	return Response(200, values), nil
 
 }
