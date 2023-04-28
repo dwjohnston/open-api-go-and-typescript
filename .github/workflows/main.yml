@@ -1,0 +1,19 @@
+name: jest-timing-action
+
+# pull request on the master branch
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  pr_check:
+    runs-on: ubuntu-latest
+    name: Post Test Timing deltas on PR
+    steps:
+    - uses: actions/checkout@v2
+    - name: PR Action
+      uses: javierfernandes/jest-timing-action@master
+      with:
+        threshold: 25
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+        
