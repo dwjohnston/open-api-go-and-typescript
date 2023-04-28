@@ -1,19 +1,23 @@
 {
   "path": "src/petstore.test.ts",
   "stats": {
-    "end": 1682651700395,
-    "runtime": 361,
+    "end": 1682652891876,
+    "runtime": 1715,
     "slow": false,
-    "start": 1682651700034
+    "start": 1682652890161
   },
   "tests": [
     {
       "fullName": "Test Scenario 1 - Create a Pet then retrieve it Can create and retrieve a pet OK",
-      "duration": 51
+      "duration": 432
     },
     {
       "fullName": "Test Scenario 2 - Create a Pet, then create a Pet with the name ID Returns an HTTP 409",
-      "duration": 10
+      "duration": 14
+    },
+    {
+      "fullName": "A performance test, get when there are 10 pets Works as expected",
+      "duration": 1032
     }
   ]
 }

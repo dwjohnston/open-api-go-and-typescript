@@ -122,3 +122,37 @@ describe("Test Scenario 2 - Create a Pet, then create a Pet with the name ID", (
 
     });
 }); 
+
+
+describe("A performance test, get when there are 10 pets", () => {
+
+    it("Works as expected", async () => {
+
+        const initialResult = await petsApi.findPetsRaw({});
+        expect(initialResult.raw.status).toBe(200);
+        const initialResultBody = await initialResult.value();
+        expect(initialResultBody).toHaveLength(0);
+
+        const proms = new Array(10).fill(true).map(async (v,i) => {
+            const apiResult1 = await petsApi.addPetRaw({
+                pet: {
+                    id: i+1,
+                    name: "Fido"
+                }
+            });
+
+            expect(apiResult1.raw.status).toBe(201);
+            const apiResultBody = await apiResult1.value();
+            expect(apiResultBody.id).toBe(i+1);
+            expect(apiResultBody.name).toBe("Fido");
+        }); 
+
+
+        await Promise.all(proms); 
+
+        const newState = await petsApi.findPetsRaw({});
+        expect(newState.raw.status).toBe(200);
+        const newStateBody = await newState.value();
+        expect(newStateBody).toHaveLength(10);
+    }); 
+}); 
