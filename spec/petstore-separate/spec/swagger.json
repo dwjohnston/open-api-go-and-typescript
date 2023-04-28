@@ -84,6 +84,12 @@
               "$ref": "Pet.json"
             }
           },
+          "403": {
+            "description": "pet response",
+            "schema": {
+              "$ref": "../common/Error.json"
+            }
+          },
           "default": {
             "description": "unexpected error",
             "schema": {

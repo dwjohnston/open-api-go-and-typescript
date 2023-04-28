@@ -12,8 +12,11 @@ package openapi
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 )
@@ -27,6 +30,43 @@ type DefaultApiService struct {
 // NewDefaultApiService creates a default api service
 func NewDefaultApiService() DefaultApiServicer {
 	return &DefaultApiService{}
+}
+
+type User struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
+
+func IsPetNameValid(name string) bool {
+	resp, err := http.Get(os.Getenv("PET_NAME_SERVICE_URL"))
+	if err != nil {
+		// Handle error
+		return false
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		// Handle error
+		return false
+	}
+
+	var users []User
+	err = json.Unmarshal(body, &users)
+	if err != nil {
+		// Handle error
+		return false
+	}
+
+	for _, user := range users {
+		if user.Username == name {
+			return false
+		}
+	}
+
+	return true
 }
 
 // I'm copying this from here: https://github.com/go-swagger/go-swagger/blob/master/examples/tutorials/todo-list/server-complete/restapi/configure_todo_list.go
@@ -43,6 +83,15 @@ func (s *DefaultApiService) AddPet(ctx context.Context, pet NewPet) (ImplRespons
 
 	if pets[pet.Id] != nil {
 		return Response(409, pets[pet.Id]), nil
+	}
+
+	if !IsPetNameValid(pet.Name) {
+
+		var message = &Error{
+			Code:    403,
+			Message: "Disallowed pet name",
+		}
+		return Response(403, message), nil
 
 	}
 
