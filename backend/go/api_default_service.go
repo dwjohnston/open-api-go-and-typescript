@@ -86,7 +86,7 @@ func (s *DefaultApiService) FindPets(ctx context.Context, tags []string, limit i
 		values = append(values, value)
 	}
 
-	time.Sleep(time.Duration(len(values) * 1000 * int(time.Millisecond)))
+	time.Sleep(time.Duration(len(values) * 100 * int(time.Millisecond)))
 	return Response(200, values), nil
 
 }
