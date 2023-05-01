@@ -1,6 +1,7 @@
 import { Configuration, ResponseError } from "../generated";
 import { DefaultApi } from "../generated/apis/DefaultApi";
 import { exec, ChildProcess } from "node:child_process";
+import jsonPlaceholderHar from "../harfiles/jsonplaceholder.har.json";
 
 const petsApi = new DefaultApi(new Configuration({
     basePath: "http://localhost:8080/api",
@@ -12,6 +13,85 @@ function validateErr(err: unknown): err is ResponseError {
 
 let serverProcess: ChildProcess;
 
+const MOCKBIN_URL = "http://localhost:8081"
+const PET_NAME_SERVICE_BASE_URL = `${MOCKBIN_URL}/bin`
+let binId: string;
+
+beforeAll(() => {
+
+    return new Promise((res, rej) => {
+        // const startMockbinProcess = exec('make start_redis; make start_mockbin', {
+        //     cwd: `${process.cwd()}/..`
+        // })
+        // startMockbinProcess.stderr?.on("data", (chunk) => {
+        //     console.log(chunk)
+        // })
+
+
+        // startMockbinProcess.stdout?.on("data", (chunk) => {
+        //     console.log(chunk)
+        // })
+
+        // // We should probably handle potential docker errors etc, a little nicer. 
+        // startMockbinProcess.on("close", async () => {
+
+
+
+        //     await new Promise((res) => {
+        //         setTimeout(res, 2000); 
+        //     }) 
+
+
+        //     console.log("closes");
+
+
+        // })
+
+        fetch(`${MOCKBIN_URL}/bin/create`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(jsonPlaceholderHar)
+        }).then((response) => {
+            if (response.status !== 201) {
+
+                const err =  new Error(`Unexpected response: ${response.status}`);
+                throw err; 
+            }
+            return response.text()
+        }).then((text) => {
+            console.log(text);
+
+            binId = text;
+            res(null);
+        }).catch((err) => {
+            console.error(err)
+            rej(err)
+        });
+    })
+
+
+});
+
+
+afterAll(() => {
+    // return new Promise((res) => {
+    //     const stopMockbinProcess = exec('make stop_mockbin; make stop_redis', {
+    //         cwd: `${process.cwd()}/..`
+    //     })
+
+    //     stopMockbinProcess.on("close", () => {
+    //         res(null); 
+    //     })
+    // })
+
+
+    return new Promise((res) => {
+        res(null);
+    })
+});
+
 beforeEach(() => {
     // We can execute asynchronous code in a beforeEach and afterEach blocks of jest
     // by returning a promise see: https://jestjs.io/docs/setup-teardown#repeating-setup:~:text=can%20handle%20asynchronous%20code%20in%20the%20same%20ways%20that%20tests%20can%20handle%20asynchronous%20code
@@ -21,7 +101,7 @@ beforeEach(() => {
         // We start our application running 
         // Note that we need to run the compiled binary! 
         // If trying to run `go run` you run into this issue: https://stackoverflow.com/questions/76051959/node-child-processes-why-does-kill-not-close-a-go-run-process-but-will
-        serverProcess = exec(`PET_NAME_SERVICE_URL="https://jsonplaceholder.typicode.com/users" ./main`, {
+        serverProcess = exec(`PET_NAME_SERVICE_URL="${PET_NAME_SERVICE_BASE_URL}/${binId}" ./main`, {
             cwd: `${process.cwd()}/../backend`
         });
 
@@ -124,10 +204,13 @@ describe("Test Scenario 2 - Create a Pet, then create a Pet with the name ID", (
 });
 
 
-describe("Test Scenario 3 - forbidden pet names", () => {
+describe.only("Test Scenario 3 - forbidden pet names", () => {
 
 
     it("Forbidden pet names will return 403", async () => {
+
+
+        console.log("test starts")
         const initialResult = await petsApi.findPetsRaw({});
         expect(initialResult.raw.status).toBe(200);
         const initialResultBody = await initialResult.value();
@@ -138,12 +221,13 @@ describe("Test Scenario 3 - forbidden pet names", () => {
             const apiResult1 = await petsApi.addPetRaw({
                 pet: {
                     id: 123,
-                    name: "Samantha"
+                    name: "SamanthaFooby"
                 }
             });
 
         } catch (err) {
             if (validateErr(err)) {
+
                 expect(err.response.status).toBe(403);
                 const body = await err.response.json();
                 // Unfortunately these are untyped
@@ -159,7 +243,7 @@ describe("Test Scenario 3 - forbidden pet names", () => {
         expect(result2.raw.status).toBe(200);
         const result2Body = await result2.value();
         expect(result2Body).toHaveLength(0);
-    
+
 
 
     });

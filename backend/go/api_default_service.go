@@ -39,34 +39,31 @@ type User struct {
 	Email    string `json:"email"`
 }
 
-func IsPetNameValid(name string) bool {
+func IsPetNameValid(name string) (bool, error) {
 	resp, err := http.Get(os.Getenv("PET_NAME_SERVICE_URL"))
 	if err != nil {
-		// Handle error
-		return false
+		return false, err
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		// Handle error
-		return false
+		return false, err
 	}
 
 	var users []User
 	err = json.Unmarshal(body, &users)
 	if err != nil {
-		// Handle error
-		return false
+		return false, err
 	}
 
 	for _, user := range users {
 		if user.Username == name {
-			return false
+			return false, nil
 		}
 	}
 
-	return true
+	return true, nil
 }
 
 // I'm copying this from here: https://github.com/go-swagger/go-swagger/blob/master/examples/tutorials/todo-list/server-complete/restapi/configure_todo_list.go
@@ -85,8 +82,15 @@ func (s *DefaultApiService) AddPet(ctx context.Context, pet NewPet) (ImplRespons
 		return Response(409, pets[pet.Id]), nil
 	}
 
-	if !IsPetNameValid(pet.Name) {
+	var isValid, err = IsPetNameValid(pet.Name)
+	if err != nil {
+		return Response(500, &Error{
+			Code:    500,
+			Message: "Internal Error",
+		}), err
+	}
 
+	if !isValid {
 		var message = &Error{
 			Code:    403,
 			Message: "Disallowed pet name",
