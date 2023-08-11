@@ -19,77 +19,127 @@ let binId: string;
 
 beforeAll(() => {
 
+
+    // Per jest's documentation - if we have a before step that requires async interactions, we can return a promise: 
+    // https://jestjs.io/docs/setup-teardown#repeating-setup:~:text=can%20handle%20asynchronous%20code%20in%20the%20same%20ways%20that%20tests%20can%20handle%20asynchronous%20code
     return new Promise((res, rej) => {
-        // const startMockbinProcess = exec('make start_redis; make start_mockbin', {
-        //     cwd: `${process.cwd()}/..`
-        // })
-        // startMockbinProcess.stderr?.on("data", (chunk) => {
-        //     console.log(chunk)
-        // })
 
 
-        // startMockbinProcess.stdout?.on("data", (chunk) => {
-        //     console.log(chunk)
-        // })
+        // It's handy to declare an async function so we can use the `await` keyword. 
+        async function startMockbin() {
+            try {
 
-        // // We should probably handle potential docker errors etc, a little nicer. 
-        // startMockbinProcess.on("close", async () => {
+                /**
+                 * Mockbin won't actually be ready right away, even though the docker container has started 
+                 * It takes around five seconds. 
+                 * 
+                 * I kept getting a ` SocketError: other side closed` error on my fetch request without this
+                 */
+                let mockbinIsReady = false;
+
+                console.log("Waiting for Mockbin to come up...");
+                let attempts = 1;
+                while (!mockbinIsReady && attempts < 10) {
+                    try {
+                        console.log(`Attempt #${attempts++}`)
+                        await fetch(`${MOCKBIN_URL}`);
+
+                        console.log("Success!");
+                        mockbinIsReady = true;
+                    } catch (err) {
+                        await new Promise((res) => {
+                            setTimeout(res, 1000);
+                        })
+                    }
+                }
+
+                /**
+                 * Make a fetch request and send the HAR file to mockbin to configure it
+                 */
+                console.log("Configure Mockbin");
+                const mockBinResponse = await fetch(`${MOCKBIN_URL}/bin/create`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(jsonPlaceholderHar)
+                })
+
+                if (mockBinResponse.status !== 201) {
+                    const err = new Error(`Unexpected response: ${mockBinResponse.status}`);
+                    throw err;
+                }
+
+                // The response text actually contains `"` so we remove them
+                const text = await mockBinResponse.text();
+                binId = text.split('"')[1];
 
 
+                /**
+                 * Conduct a simple sanity test to see that the mockbin is returning the data we expect
+                 */
+                console.log(`Mockbin bin is: "${MOCKBIN_URL}/bin/${binId}"`);
+                console.log("Conducting sanity test...")
+                const sanityTestResponse = await fetch(`${MOCKBIN_URL}/bin/${binId}`);
 
-        //     await new Promise((res) => {
-        //         setTimeout(res, 2000); 
-        //     }) 
+                console.log(sanityTestResponse)
+                const sanityJson = await sanityTestResponse.json();
 
+                if (!sanityJson.find((v: any) => v.name === "Leanne Graham")) {
+                    throw new Error("Sanity test failed. Leanne Graham not found in the mockbin response");
+                }
+                console.log("Sanity test passed.")
 
-        //     console.log("closes");
+                /**
+                 * All done. Resolve the promise. 
+                 */
 
-
-        // })
-
-        fetch(`${MOCKBIN_URL}/bin/create`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(jsonPlaceholderHar)
-        }).then((response) => {
-            if (response.status !== 201) {
-
-                const err =  new Error(`Unexpected response: ${response.status}`);
-                throw err; 
+                console.log("beforeAll setup is complete, resolving...")
+                res(null);
+            } catch (err) {
+                console.error(err);
+                rej(err);
             }
-            return response.text()
-        }).then((text) => {
-            console.log(text);
+        }
 
-            binId = text;
-            res(null);
-        }).catch((err) => {
-            console.error(err)
-            rej(err)
+        /**
+         * We start our Redis and Mockbin docker containers
+         */
+        console.log("Start Redis and Mockbin containers...")
+        const startMockbinProcess = exec('make start_redis; make start_mockbin', {
+            cwd: `${process.cwd()}/..`
+        })
+        startMockbinProcess.stderr?.on("data", (chunk) => {
+            console.log(chunk)
+        })
+
+
+        startMockbinProcess.stdout?.on("data", (chunk) => {
+            console.log(chunk)
+        })
+
+        startMockbinProcess.stdout?.on("close", () => {
+            /**
+             * When the docker process exits, start configuring mockbin
+             */
+            startMockbin();
         });
-    })
-
+    });
 
 });
 
 
 afterAll(() => {
-    // return new Promise((res) => {
-    //     const stopMockbinProcess = exec('make stop_mockbin; make stop_redis', {
-    //         cwd: `${process.cwd()}/..`
-    //     })
-
-    //     stopMockbinProcess.on("close", () => {
-    //         res(null); 
-    //     })
-    // })
-
-
     return new Promise((res) => {
-        res(null);
+        const stopMockbinProcess = exec('make stop_mockbin; make stop_redis', {
+            cwd: `${process.cwd()}/..`
+        })
+
+        stopMockbinProcess.on("close", () => {
+            res(null);
+        })
     })
+
 });
 
 beforeEach(() => {
@@ -204,13 +254,11 @@ describe("Test Scenario 2 - Create a Pet, then create a Pet with the name ID", (
 });
 
 
-describe.only("Test Scenario 3 - forbidden pet names", () => {
+describe("Test Scenario 3 - forbidden pet names", () => {
 
 
     it("Forbidden pet names will return 403", async () => {
 
-
-        console.log("test starts")
         const initialResult = await petsApi.findPetsRaw({});
         expect(initialResult.raw.status).toBe(200);
         const initialResultBody = await initialResult.value();
@@ -221,7 +269,7 @@ describe.only("Test Scenario 3 - forbidden pet names", () => {
             const apiResult1 = await petsApi.addPetRaw({
                 pet: {
                     id: 123,
-                    name: "SamanthaFooby"
+                    name: "Bret" // Leanne Graham's username
                 }
             });
 
@@ -243,9 +291,6 @@ describe.only("Test Scenario 3 - forbidden pet names", () => {
         expect(result2.raw.status).toBe(200);
         const result2Body = await result2.value();
         expect(result2Body).toHaveLength(0);
-
-
-
     });
 
 });

@@ -1,15 +1,10 @@
 {
   "path": "src/petstore.test.ts",
   "stats": {
-    "end": 1682929174167,
-    "runtime": 292,
+    "end": 1691739965248,
+    "runtime": 2068,
     "slow": false,
-    "start": 1682929173875
+    "start": 1691739963180
   },
-  "tests": [
-    {
-      "fullName": "Test Scenario 3 - forbidden pet names Forbidden pet names will return 403",
-      "duration": 29
-    }
-  ]
+  "tests": []
 }

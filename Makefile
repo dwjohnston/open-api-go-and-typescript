@@ -24,3 +24,5 @@ stop_mockbin:
 	docker stop mockbin && docker rm mockbin
 
 
+test: 
+	cd api-test-runner-jest && yarn test
