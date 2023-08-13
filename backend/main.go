@@ -15,11 +15,17 @@ import (
 	"net/http"
 
 	openapi "github.com/GIT_USER_ID/GIT_REPO_ID/go"
+	"os"
 )
 
 func main() {
-	log.Printf("Server started")
 
+	serviceUrl := os.Getenv("PET_NAME_SERVICE_URL")
+	if len(serviceUrl) == 0 {
+		log.Fatal("PET_NAME_SERVICE_URL not provided")
+	}
+
+	log.Printf("Server started")
 	DefaultApiService := openapi.NewDefaultApiService()
 	DefaultApiController := openapi.NewDefaultApiController(DefaultApiService)
 
