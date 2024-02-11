@@ -1,0 +1,17 @@
+{
+  "language": "typescript",
+  "app": "npx ts-node main2.ts",
+  "projectId": "f6a82e63-de8a-4208-97d9-c8a672f0e4fa",
+  "sendCrashReports": "true",
+  "terraformProviders": ["hashicorp/random@ ~> 3.1.0"
+],
+  "terraformModules": [
+    "terraform-aws-modules/vpc/aws@ ~> 5.5.1",
+    "terraform-aws-modules/rds/aws@~> 6.4.0"
+  ],
+  "context": {
+    "@aws-cdk/aws-ecr-assets:dockerIgnoreSupport": true
+
+  }
+  
+}
