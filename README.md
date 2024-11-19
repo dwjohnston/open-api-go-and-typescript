@@ -1,4 +1,6 @@
 
+Code example for the series of posts referenced here: https://blacksheepcode.com/posts/generating_apps_from_openapi_part2
+
 ## ‼️ IMPORTANT NOTE RE: VSCODE ‼️
 
 You can't 'add folder' this whole project into VSCode, because VSCode will get confused trying to resolve the go modules. 
